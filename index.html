@@ -6,60 +6,29 @@
 <title>Valentine 💖</title>
 
 <style>
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:'Segoe UI',sans-serif;
-}
-
 body{
+  margin:0;
   height:100vh;
   display:flex;
   justify-content:center;
   align-items:center;
   background:linear-gradient(135deg,#ff758c,#ff7eb3);
-  overflow:hidden;
-  color:white;
+  font-family:Arial;
   text-align:center;
+  color:white;
 }
 
-/* INPUT SCREEN */
-#inputScreen{
+#main{
   display:flex;
   flex-direction:column;
-  gap:15px;
-}
-
-input{
-  padding:12px;
-  border:none;
-  border-radius:25px;
-  text-align:center;
-  font-size:16px;
-  outline:none;
-}
-
-.startBtn{
-  padding:12px;
-  border:none;
-  border-radius:25px;
-  background:#00ff88;
-  cursor:pointer;
-  font-size:16px;
-}
-
-/* PROPOSAL SCREEN */
-#proposal{
-  display:none;
-  flex-direction:column;
+  align-items:center;
 }
 
 button{
   padding:12px 25px;
   font-size:18px;
   border:none;
-  border-radius:30px;
+  border-radius:25px;
   margin:15px;
   cursor:pointer;
 }
@@ -74,7 +43,6 @@ button{
   color:white;
 }
 
-/* FULL SCREEN IMAGE */
 .fullscreen{
   display:none;
   position:fixed;
@@ -86,117 +54,48 @@ button{
   justify-content:center;
   align-items:center;
   flex-direction:column;
-  z-index:999;
 }
 
 .fullscreen img{
-  max-width:95%;
-  max-height:85%;
-  border-radius:20px;
-}
-
-/* FIREWORK PARTICLES */
-.particle{
-  position:absolute;
-  width:6px;
-  height:6px;
-  border-radius:50%;
-  animation:explode 1s ease-out forwards;
-}
-
-@keyframes explode{
-  to{
-    transform:translate(var(--x),var(--y));
-    opacity:0;
-  }
+  max-width:90%;
+  max-height:80%;
 }
 </style>
 </head>
 
 <body>
 
-<!-- NAME INPUT SCREEN -->
-<div id="inputScreen">
-  <h2>Enter Names 💖</h2>
-  <input type="text" id="fromInput" placeholder="Your Name">
-  <input type="text" id="toInput" placeholder="Her Name">
-  <button class="startBtn" onclick="startProposal()">Start 💘</button>
-</div>
-
-<!-- PROPOSAL SCREEN -->
-<div id="proposal">
-  <h1 id="toName"></h1>
-  <p>Will you be mine forever? 😘</p>
-  <p id="fromName"></p>
-
+<div id="main">
+  <h1>Will You Be Mine? 💖</h1>
   <button class="yes" onclick="yesClick()">Yes 💕</button>
   <button class="no" onclick="noClick()">No 😢</button>
 </div>
 
 <!-- YES SCREEN -->
 <div id="yesScreen" class="fullscreen">
-  <h1 style="color:white;">Forever Together 💖</h1>
+  <h1>Forever Together 💖</h1>
   <img src="yes.jpeg">
 </div>
 
 <!-- NO SCREEN -->
 <div id="noScreen" class="fullscreen">
-  <h1 style="color:white;">3 Times Click 😭😂</h1>
+  <h1>3 Times Click 😭😂</h1>
   <img src="no.jpeg">
 </div>
 
 <script>
+let count = 0;
 
-let from="", to="";
-let count=0;
-
-function startProposal(){
-  from=document.getElementById("fromInput").value || "Someone";
-  to=document.getElementById("toInput").value || "My Love";
-
-  document.getElementById("toName").innerText=to+" 💖";
-  document.getElementById("fromName").innerText="From: "+from+" ❤️";
-
-  document.getElementById("inputScreen").style.display="none";
-  document.getElementById("proposal").style.display="flex";
+function yesClick(){
+  document.getElementById("yesScreen").style.display="flex";
 }
 
 function noClick(){
   count++;
-  if(count===3){
+  if(count === 3){
     document.getElementById("noScreen").style.display="flex";
   }
 }
-
-function yesClick(){
-  document.getElementById("yesScreen").style.display="flex";
-
-  for(let i=0;i<5;i++){
-    setTimeout(()=>{
-      createFirework(
-        Math.random()*window.innerWidth,
-        Math.random()*window.innerHeight/2
-      );
-    },i*300);
-  }
-}
-
-function createFirework(x,y){
-  for(let i=0;i<30;i++){
-    const p=document.createElement("div");
-    p.classList.add("particle");
-    p.style.background=`hsl(${Math.random()*360},100%,50%)`;
-    p.style.left=x+"px";
-    p.style.top=y+"px";
-    const angle=Math.random()*2*Math.PI;
-    const distance=80+Math.random()*40;
-    p.style.setProperty('--x',Math.cos(angle)*distance+'px');
-    p.style.setProperty('--y',Math.sin(angle)*distance+'px');
-    document.body.appendChild(p);
-    setTimeout(()=>p.remove(),1000);
-  }
-}
-
 </script>
 
 </body>
