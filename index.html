@@ -72,7 +72,6 @@ button{
 .no{
   background:#ff4444;
   color:white;
-  position:absolute;
 }
 
 /* FULL SCREEN IMAGE */
@@ -94,19 +93,6 @@ button{
   max-width:95%;
   max-height:85%;
   border-radius:20px;
-}
-
-/* FLOATING HEARTS */
-.heart{
-  position:absolute;
-  bottom:-20px;
-  font-size:20px;
-  animation:float 6s linear infinite;
-}
-
-@keyframes float{
-  0%{transform:translateY(0);}
-  100%{transform:translateY(-100vh);}
 }
 
 /* FIREWORK PARTICLES */
@@ -144,26 +130,25 @@ button{
   <p id="fromName"></p>
 
   <button class="yes" onclick="yesClick()">Yes 💕</button>
-  <button class="no" id="noBtn">No 😢</button>
+  <button class="no" onclick="noClick()">No 😢</button>
 </div>
 
 <!-- YES SCREEN -->
 <div id="yesScreen" class="fullscreen">
   <h1 style="color:white;">Forever Together 💖</h1>
-  <img src="yes.jpg">
+  <img src="yes.jpeg">
 </div>
 
 <!-- NO SCREEN -->
 <div id="noScreen" class="fullscreen">
   <h1 style="color:white;">3 Times Click 😭😂</h1>
-  <img src="no.jpg">
+  <img src="no.jpeg">
 </div>
 
 <script>
 
 let from="", to="";
 let count=0;
-const noBtn=document.getElementById("noBtn");
 
 function startProposal(){
   from=document.getElementById("fromInput").value || "Someone";
@@ -176,26 +161,13 @@ function startProposal(){
   document.getElementById("proposal").style.display="flex";
 }
 
-/* MOVE NO BUTTON */
-function moveBtn(){
-  const x=Math.random()*(window.innerWidth-100);
-  const y=Math.random()*(window.innerHeight-50);
-  noBtn.style.left=x+"px";
-  noBtn.style.top=y+"px";
-}
-
-noBtn.addEventListener("mouseover",moveBtn);
-noBtn.addEventListener("touchstart",moveBtn);
-
-noBtn.addEventListener("click",function(){
+function noClick(){
   count++;
-  moveBtn();
   if(count===3){
     document.getElementById("noScreen").style.display="flex";
   }
-});
+}
 
-/* YES CLICK */
 function yesClick(){
   document.getElementById("yesScreen").style.display="flex";
 
@@ -209,7 +181,6 @@ function yesClick(){
   }
 }
 
-/* FIREWORKS */
 function createFirework(x,y){
   for(let i=0;i<30;i++){
     const p=document.createElement("div");
@@ -225,18 +196,6 @@ function createFirework(x,y){
     setTimeout(()=>p.remove(),1000);
   }
 }
-
-/* FLOATING HEARTS */
-function createHeart(){
-  const heart=document.createElement("div");
-  heart.classList.add("heart");
-  heart.innerHTML="❤️";
-  heart.style.left=Math.random()*100+"vw";
-  heart.style.animationDuration=(3+Math.random()*3)+"s";
-  document.body.appendChild(heart);
-  setTimeout(()=>heart.remove(),6000);
-}
-setInterval(createHeart,500);
 
 </script>
 
