@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Valentine 💖</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
+
+body{
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:linear-gradient(135deg,#ff758c,#ff7eb3);
+  overflow:hidden;
+  color:white;
+  text-align:center;
+}
+
+/* Input Screen */
+#inputScreen{
+  display:flex;
+  flex-direction:column;
+  gap:15px;
+}
+
+input{
+  padding:10px;
+  border:none;
+  border-radius:20px;
+  text-align:center;
+  font-size:16px;
+}
+
+.startBtn{
+  padding:10px;
+  border:none;
+  border-radius:20px;
+  background:#00ff88;
+  cursor:pointer;
+  font-size:16px;
+}
+
+/* Proposal Screen */
+#proposal{
+  display:none;
+  flex-direction:column;
+}
+
+button{
+  padding:12px 25px;
+  font-size:18px;
+  border:none;
+  border-radius:30px;
+  margin:15px;
+  cursor:pointer;
+}
+
+.yes{background:#00ff88;color:black;}
+.no{background:#ff4444;color:white;position:absolute;}
+
+.fullscreen{
+  display:none;
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:black;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+}
+
+.fullscreen img{
+  max-width:95%;
+  max-height:85%;
+  border-radius:20px;
+}
+
+/* Hearts */
+.heart{
+  position:absolute;
+  bottom:-20px;
+  font-size:20px;
+  animation:float 6s linear infinite;
+}
+@keyframes float{
+  0%{transform:translateY(0);}
+  100%{transform:translateY(-100vh);}
+}
+
+/* Fireworks */
+.particle{
+  position:absolute;
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  animation:explode 1s ease-out forwards;
+}
+@keyframes explode{
+  to{
+    transform:translate(var(--x),var(--y));
+    opacity:0;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAME INPUT SCREEN -->
+<div id="inputScreen">
+  <h2>Enter Names 💖</h2>
+  <input type="text" id="fromInput" placeholder="Your Name">
+  <input type="text" id="toInput" placeholder="Her Name">
+  <button class="startBtn" onclick="startProposal()">Start 💘</button>
+</div>
+
+<!-- PROPOSAL SCREEN -->
+<div id="proposal">
+  <h1 id="toName"></h1>
+  <p>Will you be mine forever? 😘</p>
+  <p id="fromName"></p>
+
+  <button class="yes" onclick="yesClick()">Yes 💕</button>
+  <button class="no" id="noBtn">No 😢</button>
+</div>
+
+<!-- YES SCREEN -->
+<div id="yesScreen" class="fullscreen">
+  <h1 style="color:white;">Forever Together 💖</h1>
+  <img src="yes.jpg">
+</div>
+
+<!-- NO SCREEN -->
+<div id="noScreen" class="fullscreen">
+  <h1 style="color:white;">3 Times Click 😭😂</h1>
+  <img src="no.jpg">
+</div>
+
+<script>
+
+let from="", to="";
+let count=0;
+const noBtn=document.getElementById("noBtn");
+
+function startProposal(){
+  from=document.getElementById("fromInput").value || "Someone";
+  to=document.getElementById("toInput").value || "My Love";
+
+  document.getElementById("toName").innerText=to+" 💖";
+  document.getElementById("fromName").innerText="From: "+from+" ❤️";
+
+  document.getElementById("inputScreen").style.display="none";
+  document.getElementById("proposal").style.display="flex";
+}
+
+// Move No Button
+function moveBtn(){
+  const x=Math.random()*(window.innerWidth-100);
+  const y=Math.random()*(window.innerHeight-50);
+  noBtn.style.left=x+"px";
+  noBtn.style.top=y+"px";
+}
+
+noBtn.addEventListener("mouseover",moveBtn);
+noBtn.addEventListener("touchstart",moveBtn);
+
+noBtn.addEventListener("click",function(){
+  count++;
+  moveBtn();
+  if(count===3){
+    document.getElementById("noScreen").style.display="flex";
+  }
+});
+
+// YES Click
+function yesClick(){
+  document.getElementById("yesScreen").style.display="flex";
+
+  for(let i=0;i<5;i++){
+    setTimeout(()=>{
+      createFirework(
+        Math.random()*window.innerWidth,
+        Math.random()*window.innerHeight/2
+      );
+    },i*300);
+  }
+}
+
+// Fireworks
+function createFirework(x,y){
+  for(let i=0;i<30;i++){
+    const p=document.createElement("div");
+    p.classList.add("particle");
+    p.style.background=`hsl(${Math.random()*360},100%,50%)`;
+    p.style.left=x+"px";
+    p.style.top=y+"px";
+    const angle=Math.random()*2*Math.PI;
+    const distance=80+Math.random()*40;
+    p.style.setProperty('--x',Math.cos(angle)*distance+'px');
+    p.style.setProperty('--y',Math.sin(angle)*distance+'px');
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(),1000);
+  }
+}
+
+// Hearts Animation
+function createHeart(){
+  const heart=document.createElement("div");
+  heart.classList.add("heart");
+  heart.innerHTML="❤️";
+  heart.style.left=Math.random()*100+"vw";
+  heart.style.animationDuration=(3+Math.random()*3)+"s";
+  document.body.appendChild(heart);
+  setTimeout(()=>heart.remove(),6000);
+}
+setInterval(createHeart,500);
+
+</script>
+
+</body>
+</html>
