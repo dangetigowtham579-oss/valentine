@@ -6,36 +6,84 @@
 <title>Valentine 💖</title>
 
 <style>
-body{
+*{
   margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Segoe UI',sans-serif;
+}
+
+body{
   height:100vh;
   display:flex;
   justify-content:center;
   align-items:center;
   background:linear-gradient(135deg,#ff758c,#ff7eb3);
-  font-family:Arial;
-  text-align:center;
+  overflow:hidden;
   color:white;
+  text-align:center;
 }
 
-#main{
+/* Fade Animation */
+.fadeIn{
+  animation:fadeIn 0.8s ease forwards;
+}
+@keyframes fadeIn{
+  from{opacity:0; transform:translateY(20px);}
+  to{opacity:1; transform:translateY(0);}
+}
+
+/* INPUT SCREEN */
+#inputScreen{
   display:flex;
   flex-direction:column;
-  align-items:center;
+  gap:15px;
+}
+
+input{
+  padding:12px;
+  border:none;
+  border-radius:25px;
+  text-align:center;
+  font-size:16px;
+  outline:none;
+}
+
+.startBtn{
+  padding:12px;
+  border:none;
+  border-radius:25px;
+  background:#00ff88;
+  cursor:pointer;
+  font-size:16px;
+  transition:0.3s;
+}
+.startBtn:hover{
+  transform:scale(1.05);
+}
+
+/* PROPOSAL SCREEN */
+#proposal{
+  display:none;
+  flex-direction:column;
 }
 
 button{
   padding:12px 25px;
   font-size:18px;
   border:none;
-  border-radius:25px;
+  border-radius:30px;
   margin:15px;
   cursor:pointer;
+  transition:0.3s;
 }
 
 .yes{
   background:#00ff88;
   color:black;
+}
+.yes:hover{
+  transform:scale(1.1);
 }
 
 .no{
@@ -43,6 +91,7 @@ button{
   color:white;
 }
 
+/* FULLSCREEN */
 .fullscreen{
   display:none;
   position:fixed;
@@ -54,19 +103,49 @@ button{
   justify-content:center;
   align-items:center;
   flex-direction:column;
+  animation:fadeIn 0.8s ease forwards;
 }
 
 .fullscreen img{
   max-width:90%;
   max-height:80%;
+  border-radius:20px;
+  animation:zoomIn 0.8s ease;
+}
+
+@keyframes zoomIn{
+  from{transform:scale(0.7); opacity:0;}
+  to{transform:scale(1); opacity:1;}
+}
+
+.backBtn{
+  margin-top:20px;
+  padding:10px 20px;
+  border:none;
+  border-radius:20px;
+  background:#00ff88;
+  font-size:16px;
+  cursor:pointer;
 }
 </style>
 </head>
 
 <body>
 
-<div id="main">
-  <h1>Will You Be Mine? 💖</h1>
+<!-- INPUT SCREEN -->
+<div id="inputScreen" class="fadeIn">
+  <h2>Enter Your Love Story 💖</h2>
+  <input type="text" id="fromInput" placeholder="Your Name">
+  <input type="text" id="toInput" placeholder="Her Name">
+  <button class="startBtn" onclick="startProposal()">Start 💘</button>
+</div>
+
+<!-- PROPOSAL SCREEN -->
+<div id="proposal">
+  <h1 id="toName"></h1>
+  <p>Will you be mine forever? 😘</p>
+  <p id="fromName"></p>
+
   <button class="yes" onclick="yesClick()">Yes 💕</button>
   <button class="no" onclick="noClick()">No 😢</button>
 </div>
@@ -79,12 +158,29 @@ button{
 
 <!-- NO SCREEN -->
 <div id="noScreen" class="fullscreen">
-  <h1>3 Times Click 😭😂</h1>
+  <h1 style="padding:20px;">
+    please back ki velli yes click chesi naa love ni accept cheyi 💖
+  </h1>
   <img src="no.jpeg">
+  <button class="backBtn" onclick="goBack()">Go Back 💘</button>
 </div>
 
 <script>
+
 let count = 0;
+
+function startProposal(){
+  let from=document.getElementById("fromInput").value || "Someone";
+  let to=document.getElementById("toInput").value || "My Love";
+
+  document.getElementById("toName").innerText=to+" 💖";
+  document.getElementById("fromName").innerText="From: "+from+" ❤️";
+
+  document.getElementById("inputScreen").style.display="none";
+  let proposal=document.getElementById("proposal");
+  proposal.style.display="flex";
+  proposal.classList.add("fadeIn");
+}
 
 function yesClick(){
   document.getElementById("yesScreen").style.display="flex";
@@ -92,10 +188,16 @@ function yesClick(){
 
 function noClick(){
   count++;
-  if(count === 3){
+  if(count===3){
     document.getElementById("noScreen").style.display="flex";
   }
 }
+
+function goBack(){
+  document.getElementById("noScreen").style.display="none";
+  count = 0;
+}
+
 </script>
 
 </body>
